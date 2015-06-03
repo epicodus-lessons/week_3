@@ -2,7 +2,6 @@
 import java.util.HashMap;
 import java.util.List;
 
-import org.sql2o.*;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
@@ -15,32 +14,32 @@ public class App {
 
     get("/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/todos.vtl");
+      model.put("template", "templates/tasks.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/todos", (request,response) -> {
+    get("/tasks", (request,response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      List<Todo> todos = Todo.all();
-      model.put("todos", todos);
-      model.put("template", "templates/todos.vtl");
+      List<Task> tasks = Task.all();
+      model.put("tasks", tasks);
+      model.put("template", "templates/tasks.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/todos/:id", (request,response) -> {
+    get("/tasks/:id", (request,response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       int id = Integer.parseInt(request.params("id"));
-      Todo todo = Todo.find(id);
-      model.put("todo", todo);
-      model.put("template", "templates/todo.vtl");
+      Task task = Task.find(id);
+      model.put("task", task);
+      model.put("template", "templates/task.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/todos", (request, response) -> {
+    post("/tasks", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String description = request.queryParams("description");
-      Todo newTodo = new Todo(description);
-      response.redirect("/todos");
+      Task newTask = new Task(description);
+      response.redirect("/tasks");
       return null;
     });
   }
