@@ -53,7 +53,7 @@ public class Task {
     }
   }
 
-  public void update(String description, int id) {
+  public void update(String description) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE tasks SET description = :description) WHERE id = :id";
       con.createQuery(sql)
@@ -67,5 +67,8 @@ public class Task {
     try(Connection con = DB.sql2o.open()) {
     String sql = "DELETE FROM tasks WHERE id = :id;";
       con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
   }
 }

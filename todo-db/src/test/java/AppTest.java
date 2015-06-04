@@ -1,5 +1,6 @@
 import org.fluentlenium.adapter.FluentTest;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -21,7 +22,8 @@ public class AppTest extends FluentTest {
   @Rule
   public DataBaseRule database = new DataBaseRule();
 
-  @Test categoryRoute_displaysCategoryName() {
+  @Test
+  public void categoryRoute_displaysCategoryName() {
     Category myCategory = new Category("Household chores");
     String categoryPath = String.format("http://localhost:4567/%d", myCategory.getId());
     goTo(categoryPath);
