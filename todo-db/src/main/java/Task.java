@@ -27,11 +27,11 @@ public class Task {
   public int save(String description) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO Tasks(description) VALUES (:description)";
-      Object id = con.createQuery(sql, true)
+      int id = (int) con.createQuery(sql, true)
         .addParameter("description", description)
         .executeUpdate()
         .getKey();
-        return Integer.parseInt(id.toString());
+        return id;
     }
   }
 
