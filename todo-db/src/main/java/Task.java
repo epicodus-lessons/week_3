@@ -3,6 +3,7 @@ import org.sql2o.*;
 
 public class Task {
   private int id;
+  private int categoryId;
   private String description;
 
   public int getId() {
@@ -13,8 +14,14 @@ public class Task {
     return description;
   }
 
-  public Task(String description) {
-    id = save(description);
+  public int getCategoryId() {
+    return categoryId;
+  }
+
+  public Task(String description, int categoryId) {
+    this.description = description;
+    this.categoryId = categoryId;
+    id = save(description, categoryId);
   }
 
   public static List<Task> all() {
@@ -24,11 +31,12 @@ public class Task {
     }
   }
 
-  public int save(String description) {
+  public int save(String description, int categoryId) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO Tasks(description) VALUES (:description)";
+      String sql = "INSERT INTO Tasks(description, categoryId) VALUES (:description, :categoryId)";
       int id = (int) con.createQuery(sql, true)
         .addParameter("description", description)
+        .addParameter("categoryId", categoryId)
         .executeUpdate()
         .getKey();
         return id;
@@ -43,5 +51,21 @@ public class Task {
         .executeAndFetchFirst(Task.class);
       return task;
     }
+  }
+
+  public void update(String description, int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET description = :description) WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("description", description)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+    String sql = "DELETE FROM tasks WHERE id = :id;";
+      con.createQuery(sql)
   }
 }

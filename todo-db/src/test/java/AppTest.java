@@ -17,5 +17,14 @@ public class AppTest extends FluentTest {
 
   @ClassRule
   public static ServerRule server = new ServerRule();
-  
+
+  @Rule
+  public DataBaseRule database = new DataBaseRule();
+
+  @Test categoryRoute_displaysCategoryName() {
+    Category myCategory = new Category("Household chores");
+    String categoryPath = String.format("http://localhost:4567/%d", myCategory.getId());
+    goTo(categoryPath);
+    assertThat(pageSource()).contains("Household chores");
+  }
 }

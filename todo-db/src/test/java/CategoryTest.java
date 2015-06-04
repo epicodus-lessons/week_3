@@ -18,4 +18,12 @@ public class CategoryTest {
     Category savedCategory = Category.find(myCategory.getId());
     assertEquals(savedCategory.getName(), "Household chores");
   }
+
+  @Test
+  public void getTasks_retrievesALlTasksFromDatabase_tasksList() {
+    Category myCategory = new Category("Household chores");
+    Task firstTask = new Task("Mow the lawn", myCategory.getId());
+    Task secondTask = new Task("Do the dishes", myCategory.getId());
+    assertEquals(myCategory.getTasks().get(1).getDescription(), secondTask.getDescription());
+  }
 }
